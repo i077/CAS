@@ -10,7 +10,6 @@ import com.i077CAS.lang.*;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 
 /**
@@ -19,15 +18,15 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
  */
 public class Shell {
     private HashMap<String, Number> symbolStack;
-    private BufferedReader input;
+    private BufferedReader          input;
 
-    private ANTLRInputStream inputStream;
-    private CalcLexer lexer;
-    private CommonTokenStream tokens;
-    private CalcParser parser;
+    private ANTLRInputStream        inputStream;
+    private CalcLexer               lexer;
+    private CommonTokenStream       tokens;
+    private CalcParser              parser;
 
-    private ParseTree tree;
-    private CASCalcVisitor visitor;
+    private ParseTree               tree;
+    private CASCalcVisitor          visitor;
 
     public Shell() {
         this.init();
@@ -62,6 +61,7 @@ public class Shell {
         }
     }
 
+    /* NOTE: Everything past this line is old and only here temporarily. */
 
     /**
      * Exit the shell (and thus the runtime environment).
@@ -93,7 +93,7 @@ public class Shell {
                 throw new IllegalArgumentException(Messages.SymbolNotFound(tokens[0]));
             }
         } else if (isValidLiteral(tokens[0])) {
-
+            System.out.println(symbolStack.get(tokens[0]));
         } else {
             throw new IllegalArgumentException(Messages.SyntaxError);
         }
