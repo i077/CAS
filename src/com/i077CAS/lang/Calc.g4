@@ -12,17 +12,17 @@ equation
     ;
 
 assignEquation
-    : var EQ expression
+    : 'let' var EQ expression
     ;
 
 // Expression
 expression
-    : multExpression ((PLUS | MINUS) multExpression)*
+    : multExpression (op=(PLUS | MINUS) multExpression)*
     ;
 
 // Expression involving multiplication
 multExpression
-    : powExpression ((MULT | DIV) powExpression)*
+    : powExpression (op=(MULT | DIV) powExpression)*
     ;
 
 // Expression involving powers
