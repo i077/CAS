@@ -20,14 +20,6 @@ public class Shell {
     private HashMap<String, Number> symbolStack;
     private BufferedReader          input;
 
-    private ANTLRInputStream        inputStream;
-    private CalcLexer               lexer;
-    private CommonTokenStream       tokens;
-    private CalcParser              parser;
-
-    private ParseTree               tree;
-    private CASCalcVisitor          visitor;
-
     public Shell() {
         this.init();
     }
@@ -51,12 +43,13 @@ public class Shell {
     public void run() throws IOException {
         //noinspection InfiniteLoopStatement
         while (true) {
-            inputStream = new ANTLRInputStream(input.readLine());
-            lexer = new CalcLexer(inputStream);
-            tokens = new CommonTokenStream(lexer);
-            parser = new CalcParser(tokens);
-            tree = parser.input();
-            visitor = new CASCalcVisitor();
+            ANTLRInputStream    inputStream     = new ANTLRInputStream(input.readLine());
+            CalcLexer           lexer           = new CalcLexer(inputStream);
+            CommonTokenStream   tokens          = new CommonTokenStream(lexer);
+            CalcParser          parser          = new CalcParser(tokens);
+            ParseTree           tree            = parser.input();
+            CASCalcVisitor      visitor         = new CASCalcVisitor();
+
             visitor.visit(tree);
         }
     }
