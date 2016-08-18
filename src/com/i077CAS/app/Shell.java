@@ -10,6 +10,7 @@ import com.i077CAS.lang.*;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.apfloat.Apfloat;
 
 
 /**
@@ -17,7 +18,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
  * Handles user input and passes control to other parts of the CAS.
  */
 public class Shell {
-    private HashMap<String, Number> symbolStack;
+    private HashMap<String, Apfloat> memStack;
     private BufferedReader          input;
 
     public Shell() {
@@ -28,7 +29,7 @@ public class Shell {
      * Initialize the shell interface.
      */
     private void init() {
-        symbolStack = new HashMap<>();
+        memStack = new HashMap<>();
         input = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Entering interactive mode. Type an expression and press ENTER to parse.");
         
@@ -48,7 +49,7 @@ public class Shell {
             CommonTokenStream   tokens          = new CommonTokenStream(lexer);
             CalcParser          parser          = new CalcParser(tokens);
             ParseTree           tree            = parser.input();
-            CASCalcVisitor      visitor         = new CASCalcVisitor();
+            CASCalcVisitor      visitor         = new CASCalcVisitor(memStack);
 
             visitor.visit(tree);
         }
@@ -78,15 +79,15 @@ public class Shell {
         } else if (tokens[0].equals("clear")) { // Remove existing symbols
             clear(input.substring(6));
         } else if (isValidSymbolId(tokens[0])) { // Check if first token is valid symbol
-            if (symbolStack.containsKey(tokens[0])) {
+            if (memStack.containsKey(tokens[0])) {
                 if (tokens.length == 1) {
-                    System.out.println(symbolStack.get(tokens[0]));
+                    System.out.println(memStack.get(tokens[0]));
                 }
             } else {
                 throw new IllegalArgumentException(Messages.SymbolNotFound(tokens[0]));
             }
         } else if (isValidLiteral(tokens[0])) {
-            System.out.println(symbolStack.get(tokens[0]));
+            System.out.println(memStack.get(tokens[0]));
         } else {
             throw new IllegalArgumentException(Messages.SyntaxError);
         }
@@ -118,8 +119,8 @@ public class Shell {
                 String statement = s.next();
                 String[] tokensInStatement = statement.split(" ");
                 if (isValidSymbolId(tokensInStatement[0])) {
-                    symbolStack.put(tokensInStatement[0], new BigDecimal(tokensInStatement[2]));
-                    System.out.println(tokensInStatement[0] + " = " + symbolStack.get(tokensInStatement[0]));
+                    memStack.put(tokensInStatement[0], new Apfloat(tokensInStatement[2]));
+                    System.out.println(tokensInStatement[0] + " = " + memStack.get(tokensInStatement[0]));
                 } else {
                     throw new IllegalArgumentException(Messages.InvalidSymbolName(tokensInStatement[0]));
                 }
@@ -138,8 +139,8 @@ public class Shell {
             while (s.hasNext()) {
                 String token = s.next();
                 if (isValidSymbolId(token)) {
-                    if (symbolStack.containsKey(token)) {
-                        symbolStack.remove(token);
+                    if (memStack.containsKey(token)) {
+                        memStack.remove(token);
                     } else {
                         throw new IllegalArgumentException(Messages.SymbolNotFound(token));
                     }
