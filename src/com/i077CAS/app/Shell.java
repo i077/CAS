@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 import com.i077CAS.lang.*;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -18,8 +20,9 @@ import org.apfloat.Apfloat;
  * Handles user input and passes control to other parts of the CAS.
  */
 public class Shell {
-    private HashMap<String, Apfloat> memStack;
-    private BufferedReader          input;
+    private HashMap<String, Apfloat>    memStack;
+    private List<Apfloat>               resultStack;
+    private BufferedReader              input;
 
     public Shell() {
         this.init();
@@ -30,9 +33,9 @@ public class Shell {
      */
     private void init() {
         memStack = new HashMap<>();
+        resultStack = new ArrayList<>();
         input = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Entering interactive mode. Type an expression and press ENTER to parse.");
-        
     }
 
     /**
@@ -51,8 +54,23 @@ public class Shell {
             ParseTree           tree            = parser.input();
             CASCalcVisitor      visitor         = new CASCalcVisitor(memStack);
 
-            visitor.visit(tree);
+            Apfloat result = visitor.visit(tree);
+            System.out.println(ApfloatToText(result));
+            resultStack.add(result);
         }
+    }
+
+    /**
+     * Convert a given Apfloat into human-readable text.
+     * If precision is more than 6 digits, uses scientific notation.
+     *
+     * @param apfloat   The Apfloat to convert
+     */
+    private String ApfloatToText(Apfloat apfloat) {
+        if (Math.abs(apfloat.scale()) < 10) {
+            return apfloat.toString(true);
+        }
+        return apfloat.toString();
     }
 
     /* NOTE: Everything past this line is old and only here temporarily. */
