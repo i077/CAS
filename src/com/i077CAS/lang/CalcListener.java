@@ -116,18 +116,6 @@ public interface CalcListener extends ParseTreeListener {
 	 */
 	void exitFunction(CalcParser.FunctionContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code EqFunction}
-	 * labeled alternative in {@link CalcParser#unit}.
-	 * @param ctx the parse tree
-	 */
-	void enterEqFunction(CalcParser.EqFunctionContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code EqFunction}
-	 * labeled alternative in {@link CalcParser#unit}.
-	 * @param ctx the parse tree
-	 */
-	void exitEqFunction(CalcParser.EqFunctionContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link CalcParser#scientific}.
 	 * @param ctx the parse tree
 	 */
@@ -147,16 +135,6 @@ public interface CalcListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunc(CalcParser.FuncContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link CalcParser#eqfunc}.
-	 * @param ctx the parse tree
-	 */
-	void enterEqfunc(CalcParser.EqfuncContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link CalcParser#eqfunc}.
-	 * @param ctx the parse tree
-	 */
-	void exitEqfunc(CalcParser.EqfuncContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CalcParser#num}.
 	 * @param ctx the parse tree

@@ -36,7 +36,6 @@ unit
     | var                       # Variable
     | LPAREN expression RPAREN  # ParenExpression
     | func                      # Function
-    | eqfunc                    # EqFunction
     ;
 
 scientific
@@ -44,11 +43,7 @@ scientific
     ;
 
 func
-    : id LPAREN expression RPAREN
-    ;
-
-eqfunc
-    : id LPAREN equation RPAREN
+    : id LPAREN input ((COMMA input)+)? RPAREN
     ;
 
 num
@@ -89,6 +84,8 @@ LTE     : '<=';
 POINT   : '.';
 E       : 'e' | 'E';
 
+COMMA  : ',';
+
 LETTER
     : ('a' .. 'z') | ('A' .. 'Z')
     ;
@@ -96,6 +93,7 @@ LETTER
 DIGIT
     : ('0' .. '9')
     ;
+
 
 WS
     : [ \r\n\t]+ -> channel (HIDDEN)

@@ -75,13 +75,6 @@ public interface CalcVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFunction(CalcParser.FunctionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code EqFunction}
-	 * labeled alternative in {@link CalcParser#unit}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEqFunction(CalcParser.EqFunctionContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link CalcParser#scientific}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -93,12 +86,6 @@ public interface CalcVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFunc(CalcParser.FuncContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link CalcParser#eqfunc}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEqfunc(CalcParser.EqfuncContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CalcParser#num}.
 	 * @param ctx the parse tree
