@@ -35,12 +35,12 @@ public class Shell {
         memStack = new HashMap<>();
         resultStack = new ArrayList<>();
         input = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Entering interactive mode. Type an expression and press ENTER to parse.");
+        System.out.println("Entering interactive mode. Type an expression and press ENTER to evaluate.");
     }
 
     /**
      * Run the shell interface. This method takes user input, parses it,
-     * and passes that to parse().
+     * and passes the resulting parse tree to a visitor.
      *
      * @throws IOException if ANTLR was unable to open the input stream.
      */
@@ -57,6 +57,7 @@ public class Shell {
             Apfloat result = visitor.visit(tree);
             System.out.println(ApfloatToText(result));
             resultStack.add(result);
+            System.out.println();
         }
     }
 
@@ -68,6 +69,7 @@ public class Shell {
      */
     private String ApfloatToText(Apfloat apfloat) {
         if (Math.abs(apfloat.scale()) < 10) {
+            apfloat.precision(10);
             return apfloat.toString(true);
         }
         return apfloat.toString();
