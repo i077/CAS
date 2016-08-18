@@ -3,8 +3,8 @@ grammar Calc;
 // User input
 input
     : expression
-    | equation
     ;
+// TODO: Equations
 
 // Equation
 equation
