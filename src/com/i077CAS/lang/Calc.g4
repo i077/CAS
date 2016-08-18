@@ -32,11 +32,11 @@ powExpression
 
 // Unit expression
 unit
-    : scientific
-    | var
-    | LPAREN expression RPAREN
-    | func
-    | eqfunc
+    : scientific                # SciNotation
+    | var                       # Variable
+    | LPAREN expression RPAREN  # ParenExpression
+    | func                      # Function
+    | eqfunc                    # EqFunction
     ;
 
 scientific
@@ -64,11 +64,11 @@ id
     ;
 
 relop
-    : EQ
-    | GT
-    | LT
-    | GTE
-    | LTE
+    : EQ    # Equal
+    | GT    # Greater
+    | LT    # Less
+    | GTE   # GreaterOrEqual
+    | LTE   # LessOrEqual
     ;
 
 LPAREN  : '(';

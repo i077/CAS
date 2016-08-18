@@ -1,4 +1,4 @@
-// Generated from C:/Users/imran/Google Drive/CAS/src/com/i077CAS/lang\Calc.g4 by ANTLR 4.5.3
+// Generated from C:/dev/CAS/src/com/i077CAS/lang\Calc.g4 by ANTLR 4.5.3
 package com.i077CAS.lang;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -47,11 +47,40 @@ public interface CalcVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPowExpression(CalcParser.PowExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CalcParser#unit}.
+	 * Visit a parse tree produced by the {@code SciNotation}
+	 * labeled alternative in {@link CalcParser#unit}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitUnit(CalcParser.UnitContext ctx);
+	T visitSciNotation(CalcParser.SciNotationContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Variable}
+	 * labeled alternative in {@link CalcParser#unit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariable(CalcParser.VariableContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ParenExpression}
+	 * labeled alternative in {@link CalcParser#unit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParenExpression(CalcParser.ParenExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Function}
+	 * labeled alternative in {@link CalcParser#unit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunction(CalcParser.FunctionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code EqFunction}
+	 * labeled alternative in {@link CalcParser#unit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEqFunction(CalcParser.EqFunctionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CalcParser#scientific}.
 	 * @param ctx the parse tree
@@ -89,9 +118,38 @@ public interface CalcVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitId(CalcParser.IdContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CalcParser#relop}.
+	 * Visit a parse tree produced by the {@code Equal}
+	 * labeled alternative in {@link CalcParser#relop}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRelop(CalcParser.RelopContext ctx);
+	T visitEqual(CalcParser.EqualContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Greater}
+	 * labeled alternative in {@link CalcParser#relop}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGreater(CalcParser.GreaterContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Less}
+	 * labeled alternative in {@link CalcParser#relop}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLess(CalcParser.LessContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code GreaterOrEqual}
+	 * labeled alternative in {@link CalcParser#relop}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGreaterOrEqual(CalcParser.GreaterOrEqualContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code LessOrEqual}
+	 * labeled alternative in {@link CalcParser#relop}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLessOrEqual(CalcParser.LessOrEqualContext ctx);
 }

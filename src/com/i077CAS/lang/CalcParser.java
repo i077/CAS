@@ -1,4 +1,4 @@
-// Generated from C:/Users/imran/Google Drive/CAS/src/com/i077CAS/lang\Calc.g4 by ANTLR 4.5.3
+// Generated from C:/dev/CAS/src/com/i077CAS/lang\Calc.g4 by ANTLR 4.5.3
 package com.i077CAS.lang;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -17,8 +17,8 @@ public class CalcParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		LPAREN=1, RPAREN=2, PLUS=3, MINUS=4, MULT=5, DIV=6, POW=7, EQ=8, GT=9, 
-		LT=10, GTE=11, LTE=12, POINT=13, E=14, LETTER=15, DIGIT=16, WS=17;
+		T__0=1, LPAREN=2, RPAREN=3, PLUS=4, MINUS=5, MULT=6, DIV=7, POW=8, EQ=9, 
+		GT=10, LT=11, GTE=12, LTE=13, POINT=14, E=15, LETTER=16, DIGIT=17, WS=18;
 	public static final int
 		RULE_input = 0, RULE_equation = 1, RULE_assignEquation = 2, RULE_expression = 3, 
 		RULE_multExpression = 4, RULE_powExpression = 5, RULE_unit = 6, RULE_scientific = 7, 
@@ -31,12 +31,12 @@ public class CalcParser extends Parser {
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "'('", "')'", "'+'", "'-'", "'*'", "'/'", "'^'", "'='", "'>'", "'<'", 
-		"'>='", "'<='", "'.'"
+		null, "'let'", "'('", "')'", "'+'", "'-'", "'*'", "'/'", "'^'", "'='", 
+		"'>'", "'<'", "'>='", "'<='", "'.'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
-		null, "LPAREN", "RPAREN", "PLUS", "MINUS", "MULT", "DIV", "POW", "EQ", 
-		"GT", "LT", "GTE", "LTE", "POINT", "E", "LETTER", "DIGIT", "WS"
+		null, null, "LPAREN", "RPAREN", "PLUS", "MINUS", "MULT", "DIV", "POW", 
+		"EQ", "GT", "LT", "GTE", "LTE", "POINT", "E", "LETTER", "DIGIT", "WS"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -235,10 +235,12 @@ public class CalcParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(36);
-			var();
+			match(T__0);
 			setState(37);
-			match(EQ);
+			var();
 			setState(38);
+			match(EQ);
+			setState(39);
 			expression();
 			}
 		}
@@ -254,6 +256,7 @@ public class CalcParser extends Parser {
 	}
 
 	public static class ExpressionContext extends ParserRuleContext {
+		public Token op;
 		public List<MultExpressionContext> multExpression() {
 			return getRuleContexts(MultExpressionContext.class);
 		}
@@ -294,26 +297,27 @@ public class CalcParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(40);
+			setState(41);
 			multExpression();
-			setState(45);
+			setState(46);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==PLUS || _la==MINUS) {
 				{
 				{
-				setState(41);
+				setState(42);
+				((ExpressionContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
 				if ( !(_la==PLUS || _la==MINUS) ) {
-				_errHandler.recoverInline(this);
+					((ExpressionContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 				} else {
 					consume();
 				}
-				setState(42);
+				setState(43);
 				multExpression();
 				}
 				}
-				setState(47);
+				setState(48);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -331,6 +335,7 @@ public class CalcParser extends Parser {
 	}
 
 	public static class MultExpressionContext extends ParserRuleContext {
+		public Token op;
 		public List<PowExpressionContext> powExpression() {
 			return getRuleContexts(PowExpressionContext.class);
 		}
@@ -372,28 +377,29 @@ public class CalcParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(48);
+			setState(49);
 			powExpression();
-			setState(53);
+			setState(54);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,2,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(49);
+					setState(50);
+					((MultExpressionContext)_localctx).op = _input.LT(1);
 					_la = _input.LA(1);
 					if ( !(_la==MULT || _la==DIV) ) {
-					_errHandler.recoverInline(this);
+						((MultExpressionContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 					} else {
 						consume();
 					}
-					setState(50);
+					setState(51);
 					powExpression();
 					}
 					} 
 				}
-				setState(55);
+				setState(56);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,2,_ctx);
 			}
@@ -444,15 +450,15 @@ public class CalcParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(56);
+			setState(57);
 			unit();
-			setState(59);
+			setState(60);
 			_la = _input.LA(1);
 			if (_la==POW) {
 				{
-				setState(57);
-				match(POW);
 				setState(58);
+				match(POW);
+				setState(59);
 				multExpression();
 				}
 			}
@@ -471,38 +477,110 @@ public class CalcParser extends Parser {
 	}
 
 	public static class UnitContext extends ParserRuleContext {
-		public ScientificContext scientific() {
-			return getRuleContext(ScientificContext.class,0);
+		public UnitContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
 		}
+		@Override public int getRuleIndex() { return RULE_unit; }
+	 
+		public UnitContext() { }
+		public void copyFrom(UnitContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class FunctionContext extends UnitContext {
+		public FuncContext func() {
+			return getRuleContext(FuncContext.class,0);
+		}
+		public FunctionContext(UnitContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CalcListener ) ((CalcListener)listener).enterFunction(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CalcListener ) ((CalcListener)listener).exitFunction(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CalcVisitor ) return ((CalcVisitor<? extends T>)visitor).visitFunction(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class VariableContext extends UnitContext {
 		public VarContext var() {
 			return getRuleContext(VarContext.class,0);
 		}
+		public VariableContext(UnitContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CalcListener ) ((CalcListener)listener).enterVariable(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CalcListener ) ((CalcListener)listener).exitVariable(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CalcVisitor ) return ((CalcVisitor<? extends T>)visitor).visitVariable(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class SciNotationContext extends UnitContext {
+		public ScientificContext scientific() {
+			return getRuleContext(ScientificContext.class,0);
+		}
+		public SciNotationContext(UnitContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CalcListener ) ((CalcListener)listener).enterSciNotation(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CalcListener ) ((CalcListener)listener).exitSciNotation(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CalcVisitor ) return ((CalcVisitor<? extends T>)visitor).visitSciNotation(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ParenExpressionContext extends UnitContext {
 		public TerminalNode LPAREN() { return getToken(CalcParser.LPAREN, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
 		public TerminalNode RPAREN() { return getToken(CalcParser.RPAREN, 0); }
-		public FuncContext func() {
-			return getRuleContext(FuncContext.class,0);
-		}
-		public EqfuncContext eqfunc() {
-			return getRuleContext(EqfuncContext.class,0);
-		}
-		public UnitContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_unit; }
+		public ParenExpressionContext(UnitContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CalcListener ) ((CalcListener)listener).enterUnit(this);
+			if ( listener instanceof CalcListener ) ((CalcListener)listener).enterParenExpression(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CalcListener ) ((CalcListener)listener).exitUnit(this);
+			if ( listener instanceof CalcListener ) ((CalcListener)listener).exitParenExpression(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CalcVisitor ) return ((CalcVisitor<? extends T>)visitor).visitUnit(this);
+			if ( visitor instanceof CalcVisitor ) return ((CalcVisitor<? extends T>)visitor).visitParenExpression(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class EqFunctionContext extends UnitContext {
+		public EqfuncContext eqfunc() {
+			return getRuleContext(EqfuncContext.class,0);
+		}
+		public EqFunctionContext(UnitContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CalcListener ) ((CalcListener)listener).enterEqFunction(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CalcListener ) ((CalcListener)listener).exitEqFunction(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CalcVisitor ) return ((CalcVisitor<? extends T>)visitor).visitEqFunction(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -511,45 +589,50 @@ public class CalcParser extends Parser {
 		UnitContext _localctx = new UnitContext(_ctx, getState());
 		enterRule(_localctx, 12, RULE_unit);
 		try {
-			setState(69);
+			setState(70);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 			case 1:
+				_localctx = new SciNotationContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(61);
+				setState(62);
 				scientific();
 				}
 				break;
 			case 2:
+				_localctx = new VariableContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(62);
+				setState(63);
 				var();
 				}
 				break;
 			case 3:
+				_localctx = new ParenExpressionContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(63);
-				match(LPAREN);
 				setState(64);
-				expression();
+				match(LPAREN);
 				setState(65);
+				expression();
+				setState(66);
 				match(RPAREN);
 				}
 				break;
 			case 4:
+				_localctx = new FunctionContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(67);
+				setState(68);
 				func();
 				}
 				break;
 			case 5:
+				_localctx = new EqFunctionContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(68);
+				setState(69);
 				eqfunc();
 				}
 				break;
@@ -600,15 +683,15 @@ public class CalcParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(71);
+			setState(72);
 			num();
-			setState(74);
+			setState(75);
 			_la = _input.LA(1);
 			if (_la==E) {
 				{
-				setState(72);
-				match(E);
 				setState(73);
+				match(E);
+				setState(74);
 				num();
 				}
 			}
@@ -660,13 +743,13 @@ public class CalcParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(76);
-			id();
 			setState(77);
-			match(LPAREN);
+			id();
 			setState(78);
-			expression();
+			match(LPAREN);
 			setState(79);
+			expression();
+			setState(80);
 			match(RPAREN);
 			}
 		}
@@ -715,13 +798,13 @@ public class CalcParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(81);
-			id();
 			setState(82);
-			match(LPAREN);
+			id();
 			setState(83);
-			equation();
+			match(LPAREN);
 			setState(84);
+			equation();
+			setState(85);
 			match(RPAREN);
 			}
 		}
@@ -769,46 +852,46 @@ public class CalcParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(87);
+			setState(88);
 			_la = _input.LA(1);
 			if (_la==MINUS) {
 				{
-				setState(86);
+				setState(87);
 				match(MINUS);
 				}
 			}
 
-			setState(90); 
+			setState(91); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(89);
+				setState(90);
 				match(DIGIT);
 				}
 				}
-				setState(92); 
+				setState(93); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==DIGIT );
-			setState(100);
+			setState(101);
 			_la = _input.LA(1);
 			if (_la==POINT) {
 				{
-				setState(94);
+				setState(95);
 				match(POINT);
-				setState(96); 
+				setState(97); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				do {
 					{
 					{
-					setState(95);
+					setState(96);
 					match(DIGIT);
 					}
 					}
-					setState(98); 
+					setState(99); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				} while ( _la==DIGIT );
@@ -859,16 +942,16 @@ public class CalcParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(103);
+			setState(104);
 			_la = _input.LA(1);
 			if (_la==MINUS) {
 				{
-				setState(102);
+				setState(103);
 				match(MINUS);
 				}
 			}
 
-			setState(105);
+			setState(106);
 			id();
 			}
 		}
@@ -918,24 +1001,24 @@ public class CalcParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(107);
+			setState(108);
 			_la = _input.LA(1);
 			if ( !(_la==E || _la==LETTER) ) {
 			_errHandler.recoverInline(this);
 			} else {
 				consume();
 			}
-			setState(113);
+			setState(114);
 			_la = _input.LA(1);
 			if (_la==E || _la==LETTER) {
 				{
-				setState(109); 
+				setState(110); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				do {
 					{
 					{
-					setState(108);
+					setState(109);
 					_la = _input.LA(1);
 					if ( !(_la==E || _la==LETTER) ) {
 					_errHandler.recoverInline(this);
@@ -944,7 +1027,7 @@ public class CalcParser extends Parser {
 					}
 					}
 					}
-					setState(111); 
+					setState(112); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				} while ( _la==E || _la==LETTER );
@@ -965,26 +1048,98 @@ public class CalcParser extends Parser {
 	}
 
 	public static class RelopContext extends ParserRuleContext {
-		public TerminalNode EQ() { return getToken(CalcParser.EQ, 0); }
-		public TerminalNode GT() { return getToken(CalcParser.GT, 0); }
-		public TerminalNode LT() { return getToken(CalcParser.LT, 0); }
-		public TerminalNode GTE() { return getToken(CalcParser.GTE, 0); }
-		public TerminalNode LTE() { return getToken(CalcParser.LTE, 0); }
 		public RelopContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_relop; }
+	 
+		public RelopContext() { }
+		public void copyFrom(RelopContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class LessOrEqualContext extends RelopContext {
+		public TerminalNode LTE() { return getToken(CalcParser.LTE, 0); }
+		public LessOrEqualContext(RelopContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CalcListener ) ((CalcListener)listener).enterRelop(this);
+			if ( listener instanceof CalcListener ) ((CalcListener)listener).enterLessOrEqual(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CalcListener ) ((CalcListener)listener).exitRelop(this);
+			if ( listener instanceof CalcListener ) ((CalcListener)listener).exitLessOrEqual(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CalcVisitor ) return ((CalcVisitor<? extends T>)visitor).visitRelop(this);
+			if ( visitor instanceof CalcVisitor ) return ((CalcVisitor<? extends T>)visitor).visitLessOrEqual(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class EqualContext extends RelopContext {
+		public TerminalNode EQ() { return getToken(CalcParser.EQ, 0); }
+		public EqualContext(RelopContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CalcListener ) ((CalcListener)listener).enterEqual(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CalcListener ) ((CalcListener)listener).exitEqual(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CalcVisitor ) return ((CalcVisitor<? extends T>)visitor).visitEqual(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class GreaterContext extends RelopContext {
+		public TerminalNode GT() { return getToken(CalcParser.GT, 0); }
+		public GreaterContext(RelopContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CalcListener ) ((CalcListener)listener).enterGreater(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CalcListener ) ((CalcListener)listener).exitGreater(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CalcVisitor ) return ((CalcVisitor<? extends T>)visitor).visitGreater(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class GreaterOrEqualContext extends RelopContext {
+		public TerminalNode GTE() { return getToken(CalcParser.GTE, 0); }
+		public GreaterOrEqualContext(RelopContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CalcListener ) ((CalcListener)listener).enterGreaterOrEqual(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CalcListener ) ((CalcListener)listener).exitGreaterOrEqual(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CalcVisitor ) return ((CalcVisitor<? extends T>)visitor).visitGreaterOrEqual(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class LessContext extends RelopContext {
+		public TerminalNode LT() { return getToken(CalcParser.LT, 0); }
+		public LessContext(RelopContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CalcListener ) ((CalcListener)listener).enterLess(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CalcListener ) ((CalcListener)listener).exitLess(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CalcVisitor ) return ((CalcVisitor<? extends T>)visitor).visitLess(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -992,17 +1147,51 @@ public class CalcParser extends Parser {
 	public final RelopContext relop() throws RecognitionException {
 		RelopContext _localctx = new RelopContext(_ctx, getState());
 		enterRule(_localctx, 26, RULE_relop);
-		int _la;
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(115);
-			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << EQ) | (1L << GT) | (1L << LT) | (1L << GTE) | (1L << LTE))) != 0)) ) {
-			_errHandler.recoverInline(this);
-			} else {
-				consume();
-			}
+			setState(121);
+			switch (_input.LA(1)) {
+			case EQ:
+				_localctx = new EqualContext(_localctx);
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(116);
+				match(EQ);
+				}
+				break;
+			case GT:
+				_localctx = new GreaterContext(_localctx);
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(117);
+				match(GT);
+				}
+				break;
+			case LT:
+				_localctx = new LessContext(_localctx);
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(118);
+				match(LT);
+				}
+				break;
+			case GTE:
+				_localctx = new GreaterOrEqualContext(_localctx);
+				enterOuterAlt(_localctx, 4);
+				{
+				setState(119);
+				match(GTE);
+				}
+				break;
+			case LTE:
+				_localctx = new LessOrEqualContext(_localctx);
+				enterOuterAlt(_localctx, 5);
+				{
+				setState(120);
+				match(LTE);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1017,35 +1206,37 @@ public class CalcParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\23x\4\2\t\2\4\3\t"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\24~\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4"+
 		"\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\3\2\3\2\5\2!\n\2\3\3\3\3\3\3\3\3\3"+
-		"\4\3\4\3\4\3\4\3\5\3\5\3\5\7\5.\n\5\f\5\16\5\61\13\5\3\6\3\6\3\6\7\6\66"+
-		"\n\6\f\6\16\69\13\6\3\7\3\7\3\7\5\7>\n\7\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3"+
-		"\b\5\bH\n\b\3\t\3\t\3\t\5\tM\n\t\3\n\3\n\3\n\3\n\3\n\3\13\3\13\3\13\3"+
-		"\13\3\13\3\f\5\fZ\n\f\3\f\6\f]\n\f\r\f\16\f^\3\f\3\f\6\fc\n\f\r\f\16\f"+
-		"d\5\fg\n\f\3\r\5\rj\n\r\3\r\3\r\3\16\3\16\6\16p\n\16\r\16\16\16q\5\16"+
-		"t\n\16\3\17\3\17\3\17\2\2\20\2\4\6\b\n\f\16\20\22\24\26\30\32\34\2\6\3"+
-		"\2\5\6\3\2\7\b\3\2\20\21\3\2\n\16y\2 \3\2\2\2\4\"\3\2\2\2\6&\3\2\2\2\b"+
-		"*\3\2\2\2\n\62\3\2\2\2\f:\3\2\2\2\16G\3\2\2\2\20I\3\2\2\2\22N\3\2\2\2"+
-		"\24S\3\2\2\2\26Y\3\2\2\2\30i\3\2\2\2\32m\3\2\2\2\34u\3\2\2\2\36!\5\b\5"+
-		"\2\37!\5\4\3\2 \36\3\2\2\2 \37\3\2\2\2!\3\3\2\2\2\"#\5\b\5\2#$\5\34\17"+
-		"\2$%\5\b\5\2%\5\3\2\2\2&\'\5\30\r\2\'(\7\n\2\2()\5\b\5\2)\7\3\2\2\2*/"+
-		"\5\n\6\2+,\t\2\2\2,.\5\n\6\2-+\3\2\2\2.\61\3\2\2\2/-\3\2\2\2/\60\3\2\2"+
-		"\2\60\t\3\2\2\2\61/\3\2\2\2\62\67\5\f\7\2\63\64\t\3\2\2\64\66\5\f\7\2"+
-		"\65\63\3\2\2\2\669\3\2\2\2\67\65\3\2\2\2\678\3\2\2\28\13\3\2\2\29\67\3"+
-		"\2\2\2:=\5\16\b\2;<\7\t\2\2<>\5\n\6\2=;\3\2\2\2=>\3\2\2\2>\r\3\2\2\2?"+
-		"H\5\20\t\2@H\5\30\r\2AB\7\3\2\2BC\5\b\5\2CD\7\4\2\2DH\3\2\2\2EH\5\22\n"+
-		"\2FH\5\24\13\2G?\3\2\2\2G@\3\2\2\2GA\3\2\2\2GE\3\2\2\2GF\3\2\2\2H\17\3"+
-		"\2\2\2IL\5\26\f\2JK\7\20\2\2KM\5\26\f\2LJ\3\2\2\2LM\3\2\2\2M\21\3\2\2"+
-		"\2NO\5\32\16\2OP\7\3\2\2PQ\5\b\5\2QR\7\4\2\2R\23\3\2\2\2ST\5\32\16\2T"+
-		"U\7\3\2\2UV\5\4\3\2VW\7\4\2\2W\25\3\2\2\2XZ\7\6\2\2YX\3\2\2\2YZ\3\2\2"+
-		"\2Z\\\3\2\2\2[]\7\22\2\2\\[\3\2\2\2]^\3\2\2\2^\\\3\2\2\2^_\3\2\2\2_f\3"+
-		"\2\2\2`b\7\17\2\2ac\7\22\2\2ba\3\2\2\2cd\3\2\2\2db\3\2\2\2de\3\2\2\2e"+
-		"g\3\2\2\2f`\3\2\2\2fg\3\2\2\2g\27\3\2\2\2hj\7\6\2\2ih\3\2\2\2ij\3\2\2"+
-		"\2jk\3\2\2\2kl\5\32\16\2l\31\3\2\2\2ms\t\4\2\2np\t\4\2\2on\3\2\2\2pq\3"+
-		"\2\2\2qo\3\2\2\2qr\3\2\2\2rt\3\2\2\2so\3\2\2\2st\3\2\2\2t\33\3\2\2\2u"+
-		"v\t\5\2\2v\35\3\2\2\2\17 /\67=GLY^dfiqs";
+		"\4\3\4\3\4\3\4\3\4\3\5\3\5\3\5\7\5/\n\5\f\5\16\5\62\13\5\3\6\3\6\3\6\7"+
+		"\6\67\n\6\f\6\16\6:\13\6\3\7\3\7\3\7\5\7?\n\7\3\b\3\b\3\b\3\b\3\b\3\b"+
+		"\3\b\3\b\5\bI\n\b\3\t\3\t\3\t\5\tN\n\t\3\n\3\n\3\n\3\n\3\n\3\13\3\13\3"+
+		"\13\3\13\3\13\3\f\5\f[\n\f\3\f\6\f^\n\f\r\f\16\f_\3\f\3\f\6\fd\n\f\r\f"+
+		"\16\fe\5\fh\n\f\3\r\5\rk\n\r\3\r\3\r\3\16\3\16\6\16q\n\16\r\16\16\16r"+
+		"\5\16u\n\16\3\17\3\17\3\17\3\17\3\17\5\17|\n\17\3\17\2\2\20\2\4\6\b\n"+
+		"\f\16\20\22\24\26\30\32\34\2\5\3\2\6\7\3\2\b\t\3\2\21\22\u0083\2 \3\2"+
+		"\2\2\4\"\3\2\2\2\6&\3\2\2\2\b+\3\2\2\2\n\63\3\2\2\2\f;\3\2\2\2\16H\3\2"+
+		"\2\2\20J\3\2\2\2\22O\3\2\2\2\24T\3\2\2\2\26Z\3\2\2\2\30j\3\2\2\2\32n\3"+
+		"\2\2\2\34{\3\2\2\2\36!\5\b\5\2\37!\5\4\3\2 \36\3\2\2\2 \37\3\2\2\2!\3"+
+		"\3\2\2\2\"#\5\b\5\2#$\5\34\17\2$%\5\b\5\2%\5\3\2\2\2&\'\7\3\2\2\'(\5\30"+
+		"\r\2()\7\13\2\2)*\5\b\5\2*\7\3\2\2\2+\60\5\n\6\2,-\t\2\2\2-/\5\n\6\2."+
+		",\3\2\2\2/\62\3\2\2\2\60.\3\2\2\2\60\61\3\2\2\2\61\t\3\2\2\2\62\60\3\2"+
+		"\2\2\638\5\f\7\2\64\65\t\3\2\2\65\67\5\f\7\2\66\64\3\2\2\2\67:\3\2\2\2"+
+		"8\66\3\2\2\289\3\2\2\29\13\3\2\2\2:8\3\2\2\2;>\5\16\b\2<=\7\n\2\2=?\5"+
+		"\n\6\2><\3\2\2\2>?\3\2\2\2?\r\3\2\2\2@I\5\20\t\2AI\5\30\r\2BC\7\4\2\2"+
+		"CD\5\b\5\2DE\7\5\2\2EI\3\2\2\2FI\5\22\n\2GI\5\24\13\2H@\3\2\2\2HA\3\2"+
+		"\2\2HB\3\2\2\2HF\3\2\2\2HG\3\2\2\2I\17\3\2\2\2JM\5\26\f\2KL\7\21\2\2L"+
+		"N\5\26\f\2MK\3\2\2\2MN\3\2\2\2N\21\3\2\2\2OP\5\32\16\2PQ\7\4\2\2QR\5\b"+
+		"\5\2RS\7\5\2\2S\23\3\2\2\2TU\5\32\16\2UV\7\4\2\2VW\5\4\3\2WX\7\5\2\2X"+
+		"\25\3\2\2\2Y[\7\7\2\2ZY\3\2\2\2Z[\3\2\2\2[]\3\2\2\2\\^\7\23\2\2]\\\3\2"+
+		"\2\2^_\3\2\2\2_]\3\2\2\2_`\3\2\2\2`g\3\2\2\2ac\7\20\2\2bd\7\23\2\2cb\3"+
+		"\2\2\2de\3\2\2\2ec\3\2\2\2ef\3\2\2\2fh\3\2\2\2ga\3\2\2\2gh\3\2\2\2h\27"+
+		"\3\2\2\2ik\7\7\2\2ji\3\2\2\2jk\3\2\2\2kl\3\2\2\2lm\5\32\16\2m\31\3\2\2"+
+		"\2nt\t\4\2\2oq\t\4\2\2po\3\2\2\2qr\3\2\2\2rp\3\2\2\2rs\3\2\2\2su\3\2\2"+
+		"\2tp\3\2\2\2tu\3\2\2\2u\33\3\2\2\2v|\7\13\2\2w|\7\f\2\2x|\7\r\2\2y|\7"+
+		"\16\2\2z|\7\17\2\2{v\3\2\2\2{w\3\2\2\2{x\3\2\2\2{y\3\2\2\2{z\3\2\2\2|"+
+		"\35\3\2\2\2\20 \608>HMZ_egjrt{";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
