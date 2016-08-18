@@ -21,13 +21,8 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      * @param ctx   The context to visit
      * @return  The value that the context evaluates to
      */
-    @Override
     public Apfloat visitInput(CalcParser.InputContext ctx) {
-        switch (ctx.getRuleIndex()) {
-            case 1:     // expression
-                return visitExpression(ctx.expression());
-        }
-        return new Apfloat(0);
+        return visit(ctx.expression());
     }
 
     /**
@@ -38,8 +33,10 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      */
     @Override
     public Apfloat visitExpression(CalcParser.ExpressionContext ctx) {
-        Apfloat lValue = visitMultExpression(ctx.multExpression(0));
-        Apfloat rValue = visitMultExpression(ctx.multExpression(1));
+        Apfloat lValue = visit(ctx.multExpression(0));
+        Apfloat rValue = (ctx.multExpression(1) != null ? visit(ctx.multExpression(1)) : new Apfloat(0));
+
+        if (ctx.op == null) return lValue;
 
         return (ctx.op.getType() == CalcParser.PLUS ?
                 lValue.add(rValue) :
@@ -54,8 +51,10 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      */
     @Override
     public Apfloat visitMultExpression(CalcParser.MultExpressionContext ctx) {
-        Apfloat lValue = visitPowExpression(ctx.powExpression(0));
-        Apfloat rValue = visitPowExpression(ctx.powExpression(1));
+        Apfloat lValue = visit(ctx.powExpression(0));
+        Apfloat rValue = (ctx.powExpression(1) != null ? visit(ctx.powExpression(1)) : new Apfloat(1));
+
+        if (ctx.op == null) return lValue;
 
         return (ctx.op.getType() == CalcParser.MULT ?
                 lValue.multiply(rValue) :
@@ -64,8 +63,8 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
 
     @Override
     public Apfloat visitPowExpression(CalcParser.PowExpressionContext ctx) {
-        Apfloat base = visitUnit(ctx.unit());
-        Apfloat exp  = visitMultExpression(ctx.multExpression());
+        Apfloat base = visit(ctx.unit());
+        Apfloat exp  = (ctx.multExpression() != null ? visit(ctx.multExpression()) : new Apfloat(1));
 
         return ApfloatMath.pow(base, exp);
     }
@@ -106,7 +105,7 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      */
     @Override
     public Apfloat visitSciNotation(CalcParser.SciNotationContext ctx) {
-        return visitScientific(ctx.scientific());
+        return visit(ctx.scientific());
     }
 
     /**
@@ -118,7 +117,7 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      */
     @Override
     public Apfloat visitVariable(CalcParser.VariableContext ctx) {
-        return visitVar(ctx.var());
+        return visit(ctx.var());
     }
 
     /**
@@ -130,7 +129,7 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      */
     @Override
     public Apfloat visitParenExpression(CalcParser.ParenExpressionContext ctx) {
-        return visitExpression(ctx.expression());
+        return visit(ctx.expression());
     }
 
     /**
@@ -142,7 +141,7 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      */
     @Override
     public Apfloat visitFunction(CalcParser.FunctionContext ctx) {
-        return visitFunc(ctx.func());
+        return visit(ctx.func());
     }
 
     /**
@@ -155,7 +154,7 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      */
     @Override
     public Apfloat visitScientific(CalcParser.ScientificContext ctx) {
-        return new Apfloat(ctx.getText());
+        return new Apfloat(ctx.getText(), 32);
     }
 
     /**
@@ -169,20 +168,6 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
     public Apfloat visitVar(CalcParser.VarContext ctx) {
         String id = ctx.id().getText();
         if (memStack.containsKey(id)) return memStack.get(id);
-        return new Apfloat(0);
-    }
-
-    private Apfloat visitUnit(CalcParser.UnitContext ctx) {
-        switch (ctx.getAltNumber()) {
-            case 1:
-                return visitSciNotation((CalcParser.SciNotationContext)ctx.getPayload());
-            case 2:
-                return visitVariable((CalcParser.VariableContext)ctx.getPayload());
-            case 3:
-                return visitParenExpression((CalcParser.ParenExpressionContext)ctx.getPayload());
-            case 4:
-                return visitFunction((CalcParser.FunctionContext)ctx.getPayload());
-        }
         return new Apfloat(0);
     }
 }
