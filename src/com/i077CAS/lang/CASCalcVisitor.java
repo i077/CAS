@@ -1,6 +1,7 @@
 package com.i077CAS.lang;
 
-import org.antlr.v4.runtime.tree.ParseTree;
+import org.apfloat.Apfloat;
+import org.apfloat.Apfloat;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -8,8 +9,8 @@ import java.util.HashMap;
 /**
  * Implementation of a visitor that evaluates a given input.
  */
-public class CASCalcVisitor extends CalcBaseVisitor<Number> {
-    HashMap<String, Number> memStack = new HashMap<>();
+public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
+    private HashMap<String, Apfloat> memStack = new HashMap<>();
 
     /**
      * Visit an input context and return its value.
@@ -17,12 +18,12 @@ public class CASCalcVisitor extends CalcBaseVisitor<Number> {
      * @param ctx   The context to visit
      * @return  The value that the context evaluates to
      */
-    public Number visitInput(CalcParser.InputContext ctx) {
+    public Apfloat visitInput(CalcParser.InputContext ctx) {
         switch (ctx.getRuleIndex()) {
             case 1:     // expression
                 return visitExpression(ctx.expression());
         }
-        return 0;
+        return new Apfloat(0);
     }
 
     /**
@@ -36,7 +37,7 @@ public class CASCalcVisitor extends CalcBaseVisitor<Number> {
      * @param ctx   The context to visit
      * @return  The value of the unit that the context represents or evaluates to
      */
-    public Number visitUnit(CalcParser.UnitContext ctx) {
+    public Apfloat visitUnit(CalcParser.UnitContext ctx) {
         switch (ctx.getRuleIndex()) {
             case 1:     // Number in scientific notation
                 return visitScientific(ctx.scientific());
@@ -49,19 +50,19 @@ public class CASCalcVisitor extends CalcBaseVisitor<Number> {
             case 5:     // Equation function call
                 return visitEqfunc(ctx.eqfunc());
         }
-        return 0;
+        return new Apfloat(0);
     }
 
     /**
      * Visit a scientific number context and return its value.
      *
-     * Scientific numbers are written as (num)(E)(num).
+     * Scientific numbers are written as:   <code>num ('e'|'E' num)</code>
      *
      * @param ctx   The context to visit
      * @return  The value of the scientific number that the context represents
      */
-    public Number visitScientific(CalcParser.ScientificContext ctx) {
-        return new BigDecimal(ctx.getText());
+    public Apfloat visitScientific(CalcParser.ScientificContext ctx) {
+        return new Apfloat(ctx.getText());
     }
 
     /**
@@ -71,9 +72,9 @@ public class CASCalcVisitor extends CalcBaseVisitor<Number> {
      * @param ctx   The context to visit
      * @return  The value of the variable the context represents if it exists in memStack, 0 if it doesn't.
      */
-    public Number visitVar(CalcParser.VarContext ctx) {
+    public Apfloat visitVar(CalcParser.VarContext ctx) {
         String id = ctx.id().getText();
         if (memStack.containsKey(id)) return memStack.get(id);
-        return 0;
+        return new Apfloat(0);
     }
 }
