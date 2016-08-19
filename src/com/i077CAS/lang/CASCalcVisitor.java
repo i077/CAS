@@ -34,17 +34,17 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
     @Override
     public Apfloat visitExpression(CalcParser.ExpressionContext ctx) {
         Apfloat lValue = visit(ctx.multExpression(0));
-        Apfloat rValue = (ctx.multExpression(1) != null ? visit(ctx.multExpression(1)) : new Apfloat(0));
-
         if (ctx.op == null) return lValue;
 
+        // If this line is reached, an operation is being performed here.
+        Apfloat rValue = visit(ctx.multExpression(1));
         return (ctx.op.getType() == CalcParser.PLUS ?
                 lValue.add(rValue) :
                 lValue.subtract(rValue));
     }
 
     /**
-     * Visit a multiplicative expression context and evaluate it
+     * Visit a multiplicative expression context and evaluate it.
      *
      * @param ctx   The context to visit
      * @return  The value of the expression represented by the context
@@ -52,15 +52,21 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
     @Override
     public Apfloat visitMultExpression(CalcParser.MultExpressionContext ctx) {
         Apfloat lValue = visit(ctx.powExpression(0));
-        Apfloat rValue = (ctx.powExpression(1) != null ? visit(ctx.powExpression(1)) : new Apfloat(1));
-
         if (ctx.op == null) return lValue;
 
+        // If this line is reached, an operation is being performed here.
+        Apfloat rValue = visit(ctx.powExpression(1));
         return (ctx.op.getType() == CalcParser.MULT ?
                 lValue.multiply(rValue) :
                 lValue.divide(rValue));
     }
 
+    /**
+     * Visit an exponential expression context and evaluate it.
+     *
+     * @param ctx   The context to visit
+     * @return  The value of the expression represented by the context
+     */
     @Override
     public Apfloat visitPowExpression(CalcParser.PowExpressionContext ctx) {
         Apfloat base = visit(ctx.unit());
@@ -68,33 +74,6 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
 
         return ApfloatMath.pow(base, exp);
     }
-
-    //    /**
-//     * Visit a unit context and return its value.
-//     *
-//     * Units can be either: a number (written in scientific notation if needed),
-//     *                      a variable (if undefined, evaluates to 0),
-//     *                      an expression wrapped in parentheses, or
-//     *                      a function call.
-//     *
-//     * @param ctx   The context to visit
-//     * @return  The value of the unit that the context represents or evaluates to
-//     */
-//    public Apfloat visitUnit(CalcParser.UnitContext ctx) {
-//        switch (ctx.getAltNumber()) {
-//            case 1:     // Number in scientific notation
-//                return visitScientific();
-//            case 2:     // Variable
-//                return visitVar(ctx.var());
-//            case 3:     // Expression in parentheses
-//                return visitExpression(ctx.expression());
-//            case 4:     // Function call
-//                return visitFunc(ctx.func());
-//            case 5:     // Equation function call
-//                return visitEqfunc(ctx.eqfunc());
-//        }
-//        return new Apfloat(0);
-//    }
 
     /**
      * Visit the scientific notation alternative defined in the unit grammar rule.
