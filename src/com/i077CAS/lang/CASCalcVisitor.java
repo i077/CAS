@@ -53,6 +53,12 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
         return val;
     }
 
+    /**
+     * Visit an equation context and return the truth value of the equation.
+     *
+     * @param ctx   The context to visit
+     * @return  The truth value of the equation, which depends on the relative operator used
+     */
     @Override
     public Apfloat visitEquation(CalcParser.EquationContext ctx) {
         Apfloat lValue = visit(ctx.expression(0));
@@ -202,8 +208,13 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
         return new Apfloat(0);
     }
 
+    /**
+     * Visit a last result context and return the last result in the result stack.
+     * @param ctx   The context to visit
+     * @return  The last result if it exists, otherwise {@code 0}.
+     */
     @Override
     public Apfloat visitLastResult(CalcParser.LastResultContext ctx) {
-        return resultStack.get(resultStack.size() - 1);
+        return resultStack.size() > 0 ? resultStack.get(resultStack.size() - 1) : new Apfloat(0);
     }
 }

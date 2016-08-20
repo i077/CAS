@@ -10,4 +10,4 @@ types their expression into and presses `ENTER` to evaluate it.
 To parse this user input, this CAS uses [ANTLR](http://www.antlr.org/).
 
 [Apfloat for Java](http://www.apfloat.org/apfloat_java/) is used to store numerical 
-data.
+data and evaluate input.
