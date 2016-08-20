@@ -54,9 +54,14 @@ public class Shell {
             ParseTree           tree            = parser.input();
             CASCalcVisitor      visitor         = new CASCalcVisitor(memStack, resultStack);
 
-            Apfloat result = visitor.visit(tree);
-            System.out.println(ApfloatToText(result));
-            resultStack.add(result);
+
+            try {
+                Apfloat result = visitor.visit(tree);
+                System.out.println(ApfloatToText(result));
+                resultStack.add(result);
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
             System.out.println();
         }
     }
