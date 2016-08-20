@@ -76,6 +76,13 @@ public interface CalcVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVariable(CalcParser.VariableContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code LastResult}
+	 * labeled alternative in {@link CalcParser#unit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLastResult(CalcParser.LastResultContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code ParenExpression}
 	 * labeled alternative in {@link CalcParser#unit}.
 	 * @param ctx the parse tree

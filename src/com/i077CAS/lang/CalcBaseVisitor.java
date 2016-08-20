@@ -87,6 +87,13 @@ public class CalcBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements C
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitLastResult(CalcParser.LastResultContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitParenExpression(CalcParser.ParenExpressionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

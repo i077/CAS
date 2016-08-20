@@ -36,6 +36,7 @@ powExpression
 unit
     : scientific                # SciNotation
     | var                       # Variable
+    | ANS                       # LastResult
     | LPAREN expression RPAREN  # ParenExpression
     | func                      # Function
     ;
@@ -87,6 +88,8 @@ POINT   : '.';
 E       : 'e' | 'E';
 
 COMMA  : ',';
+
+ANS    : 'ans';
 
 LETTER
     : ('a' .. 'z') | ('A' .. 'Z')

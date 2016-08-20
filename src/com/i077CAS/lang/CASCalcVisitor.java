@@ -4,15 +4,18 @@ import org.apfloat.Apfloat;
 import org.apfloat.ApfloatMath;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Implementation of a visitor that evaluates a given input.
  */
 public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
     private HashMap<String, Apfloat> memStack;
+    private List<Apfloat> resultStack;
 
-    public CASCalcVisitor(HashMap<String, Apfloat> currStack) {
-        memStack = currStack;
+    public CASCalcVisitor(HashMap<String, Apfloat> currStack, List<Apfloat> resultStack) {
+        this.memStack = currStack;
+        this.resultStack = resultStack;
     }
 
     /**
@@ -197,5 +200,10 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
         String id = ctx.id().getText();
         if (memStack.containsKey(id)) return memStack.get(id);
         return new Apfloat(0);
+    }
+
+    @Override
+    public Apfloat visitLastResult(CalcParser.LastResultContext ctx) {
+        return resultStack.get(resultStack.size() - 1);
     }
 }

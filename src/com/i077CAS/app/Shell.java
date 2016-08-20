@@ -35,7 +35,7 @@ public class Shell {
         memStack = new HashMap<>();
         resultStack = new ArrayList<>();
         input = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Entering interactive mode. Type an expression and press ENTER to evaluate.");
+        System.out.println("Entering interactive mode. Type an expression or equation and press ENTER to evaluate.");
     }
 
     /**
@@ -52,7 +52,7 @@ public class Shell {
             CommonTokenStream   tokens          = new CommonTokenStream(lexer);
             CalcParser          parser          = new CalcParser(tokens);
             ParseTree           tree            = parser.input();
-            CASCalcVisitor      visitor         = new CASCalcVisitor(memStack);
+            CASCalcVisitor      visitor         = new CASCalcVisitor(memStack, resultStack);
 
             Apfloat result = visitor.visit(tree);
             System.out.println(ApfloatToText(result));
