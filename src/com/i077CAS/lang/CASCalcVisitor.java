@@ -50,6 +50,30 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
         return val;
     }
 
+    @Override
+    public Apfloat visitEquation(CalcParser.EquationContext ctx) {
+        Apfloat lValue = visit(ctx.expression(0));
+        Apfloat rValue = visit(ctx.expression(1));
+
+        boolean ret = false;
+        switch (ctx.relop.getType()) {
+            case CalcParser.EQ:
+                ret = lValue.equals(rValue);
+                break;
+            case CalcParser.GT:
+            case CalcParser.LT:
+                ret = lValue.compareTo(rValue) == (ctx.relop.getType() == CalcParser.GT ? 1 : -1);
+                break;
+            case CalcParser.GTE:
+            case CalcParser.LTE:
+                ret = (lValue.compareTo(rValue) == (ctx.relop.getType() == CalcParser.GTE ? 1 : -1))
+                        || lValue.equals(rValue);
+                break;
+        }
+
+        return ret ? new Apfloat(1) : new Apfloat(0);
+    }
+
     /**
      * Visit an expression context and evaluate it.
      *

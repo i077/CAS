@@ -119,39 +119,4 @@ public interface CalcVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitId(CalcParser.IdContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Equal}
-	 * labeled alternative in {@link CalcParser#relop}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEqual(CalcParser.EqualContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Greater}
-	 * labeled alternative in {@link CalcParser#relop}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitGreater(CalcParser.GreaterContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Less}
-	 * labeled alternative in {@link CalcParser#relop}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLess(CalcParser.LessContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code GreaterOrEqual}
-	 * labeled alternative in {@link CalcParser#relop}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitGreaterOrEqual(CalcParser.GreaterOrEqualContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code LessOrEqual}
-	 * labeled alternative in {@link CalcParser#relop}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLessOrEqual(CalcParser.LessOrEqualContext ctx);
 }

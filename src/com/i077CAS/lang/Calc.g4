@@ -10,7 +10,7 @@ input
 
 // Equation
 equation
-    : expression relop expression
+    : expression relop=(EQ | LT | GT | GTE | LTE) expression
     ;
 
 assignEquation
@@ -57,16 +57,16 @@ var
     ;
 
 id
-    : (LETTER | E) ((LETTER | E)+)?
+    : (LETTER | E) ((LETTER | E | DIGIT)+)?
     ;
 
-relop
-    : EQ    # Equal
-    | GT    # Greater
-    | LT    # Less
-    | GTE   # GreaterOrEqual
-    | LTE   # LessOrEqual
-    ;
+//relop
+//    : EQ    # Equal
+//    | GT    # Greater
+//    | LT    # Less
+//    | GTE   # GreaterOrEqual
+//    | LTE   # LessOrEqual
+//    ;
 
 LPAREN  : '(';
 RPAREN  : ')';
