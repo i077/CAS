@@ -16,13 +16,38 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
     }
 
     /**
-     * Visit an input context and return its value.
+     * Visit an expression input context and return its value.
      *
      * @param ctx   The context to visit
-     * @return  The value that the context evaluates to
+     * @return  The value that the expression represented by the context evaluates to
      */
-    public Apfloat visitInput(CalcParser.InputContext ctx) {
-        return visit(ctx.expression());
+    @Override
+    public Apfloat visitExprInput(CalcParser.ExprInputContext ctx) {
+        return visitExpression(ctx.expression());
+    }
+
+    @Override
+    public Apfloat visitEquInput(CalcParser.EquInputContext ctx) {
+        return visitEquation(ctx.equation());
+    }
+
+    @Override
+    public Apfloat visitAssignEquInput(CalcParser.AssignEquInputContext ctx) {
+        return visitAssignEquation(ctx.assignEquation());
+    }
+
+    /**
+     * Visit an assignment equation context and return the value being assigned.
+     *
+     * @param ctx   The context to visit
+     * @return  The value of the expression being assigned to the variable
+     */
+    public Apfloat visitAssignEquation(CalcParser.AssignEquationContext ctx) {
+        String id = ctx.var().getText();
+        Apfloat val = visit(ctx.expression());
+        memStack.put(id, val);
+
+        return val;
     }
 
     /**

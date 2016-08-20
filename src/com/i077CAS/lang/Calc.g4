@@ -2,7 +2,9 @@ grammar Calc;
 
 // User input
 input
-    : expression
+    : expression        # ExprInput
+    | equation          # EquInput
+    | assignEquation    # AssignEquInput
     ;
 // TODO: Equations
 

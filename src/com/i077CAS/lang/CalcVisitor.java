@@ -11,11 +11,26 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface CalcVisitor<T> extends ParseTreeVisitor<T> {
 	/**
-	 * Visit a parse tree produced by {@link CalcParser#input}.
+	 * Visit a parse tree produced by the {@code ExprInput}
+	 * labeled alternative in {@link CalcParser#input}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitInput(CalcParser.InputContext ctx);
+	T visitExprInput(CalcParser.ExprInputContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code EquInput}
+	 * labeled alternative in {@link CalcParser#input}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEquInput(CalcParser.EquInputContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code AssignEquInput}
+	 * labeled alternative in {@link CalcParser#input}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignEquInput(CalcParser.AssignEquInputContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CalcParser#equation}.
 	 * @param ctx the parse tree
