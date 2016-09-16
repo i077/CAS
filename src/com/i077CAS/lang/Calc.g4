@@ -1,12 +1,14 @@
 grammar Calc;
 
+// Reserved tokens
+ANS    : 'ans';
+
 // User input
 input
     : expression        # ExprInput
     | equation          # EquInput
     | assignEquation    # AssignEquInput
     ;
-// TODO: Equations
 
 // Equation
 equation
@@ -88,8 +90,6 @@ POINT   : '.';
 E       : 'e' | 'E';
 
 COMMA  : ',';
-
-ANS    : 'ans';
 
 LETTER
     : ('a' .. 'z') | ('A' .. 'Z')

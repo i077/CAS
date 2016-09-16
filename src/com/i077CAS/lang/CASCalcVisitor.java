@@ -13,6 +13,12 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
     private HashMap<String, Apfloat> memStack;
     private List<Apfloat> resultStack;
 
+    /**
+     * Construct a new CASCalcVisitor with memory and result stacks.
+     *
+     * @param currStack     The stack that stores variables and their values.
+     * @param resultStack   The stack of results that the user inputs evaluate to.
+     */
     public CASCalcVisitor(HashMap<String, Apfloat> currStack, List<Apfloat> resultStack) {
         this.memStack = currStack;
         this.resultStack = resultStack;
@@ -29,6 +35,11 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
         return visitExpression(ctx.expression());
     }
 
+    /**
+     * Visit an equation input context and return its truth value.
+     *     * @param ctx   The context to visit
+     * @return  1 if the equation evaluates to true, 0 if false.
+     */
     @Override
     public Apfloat visitEquInput(CalcParser.EquInputContext ctx) {
         return visitEquation(ctx.equation());
