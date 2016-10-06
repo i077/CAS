@@ -1,25 +1,25 @@
 package com.i077CAS.lang;
 
-import org.apfloat.Apfloat;
-import org.apfloat.ApfloatMath;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.HashMap;
 import java.util.List;
 
 /**
  * Implementation of a visitor that evaluates a given input.
  */
-public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
-    private HashMap<String, Apfloat> memStack;
-    private List<Apfloat> resultStack;
+public class CASCalcVisitor extends CalcBaseVisitor<BigDecimal> {
+    private HashMap<String, BigDecimal> memStack;
+    private List<BigDecimal> resultStack;
 
     /**
-     * Construct a new CASCalcVisitor with memory and result stacks.
+     * Construct a new parse tree visitor with passed in memory and result stacks.
      *
      * @param currStack     The stack that stores variables and their values.
      * @param resultStack   The stack of results that the user inputs evaluate to.
      */
-    public CASCalcVisitor(HashMap<String, Apfloat> currStack, List<Apfloat> resultStack) {
+    public CASCalcVisitor(HashMap<String, BigDecimal> currStack, List<BigDecimal> resultStack) {
         this.memStack = currStack;
         this.resultStack = resultStack;
     }
@@ -31,7 +31,7 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      * @return  The value that the expression represented by the context evaluates to
      */
     @Override
-    public Apfloat visitExprInput(CalcParser.ExprInputContext ctx) {
+    public BigDecimal visitExprInput(CalcParser.ExprInputContext ctx) {
         return visitExpression(ctx.expression());
     }
 
@@ -41,12 +41,12 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      * @return  1 if the equation evaluates to true, 0 if false.
      */
     @Override
-    public Apfloat visitEquInput(CalcParser.EquInputContext ctx) {
+    public BigDecimal visitEquInput(CalcParser.EquInputContext ctx) {
         return visitEquation(ctx.equation());
     }
 
     @Override
-    public Apfloat visitAssignEquInput(CalcParser.AssignEquInputContext ctx) {
+    public BigDecimal visitAssignEquInput(CalcParser.AssignEquInputContext ctx) {
         return visitAssignEquation(ctx.assignEquation());
     }
 
@@ -56,12 +56,23 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      * @param ctx   The context to visit
      * @return  The value of the expression being assigned to the variable
      */
-    public Apfloat visitAssignEquation(CalcParser.AssignEquationContext ctx) {
+    public BigDecimal visitAssignEquation(CalcParser.AssignEquationContext ctx) {
         String id = ctx.var().getText();
-        Apfloat val = visit(ctx.expression());
+        BigDecimal val = visit(ctx.expression());
         memStack.put(id, val);
 
         return val;
+    }
+
+    /**
+     * Visit a function call context and return the resulting value.
+     *
+     * @param ctx   The context to visit
+     * @return  The return value of the function
+     */
+    @Override
+    public BigDecimal visitFunc(CalcParser.FuncContext ctx) {
+        return super.visitFunc(ctx);
     }
 
     /**
@@ -71,27 +82,27 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      * @return  The truth value of the equation, which depends on the relative operator used
      */
     @Override
-    public Apfloat visitEquation(CalcParser.EquationContext ctx) {
-        Apfloat lValue = visit(ctx.expression(0));
-        Apfloat rValue = visit(ctx.expression(1));
+    public BigDecimal visitEquation(CalcParser.EquationContext ctx) {
+        BigDecimal lValue = visit(ctx.expression(0));
+        BigDecimal rValue = visit(ctx.expression(1));
 
-        boolean ret = false;
+        boolean truthValue = false;
         switch (ctx.relop.getType()) {
             case CalcParser.EQ:
-                ret = lValue.equals(rValue);
+                truthValue = lValue.equals(rValue);
                 break;
             case CalcParser.GT:
             case CalcParser.LT:
-                ret = lValue.compareTo(rValue) == (ctx.relop.getType() == CalcParser.GT ? 1 : -1);
+                truthValue = lValue.compareTo(rValue) == (ctx.relop.getType() == CalcParser.GT ? 1 : -1);
                 break;
             case CalcParser.GTE:
             case CalcParser.LTE:
-                ret = (lValue.compareTo(rValue) == (ctx.relop.getType() == CalcParser.GTE ? 1 : -1))
+                truthValue = (lValue.compareTo(rValue) == (ctx.relop.getType() == CalcParser.GTE ? 1 : -1))
                         || lValue.equals(rValue);
                 break;
         }
 
-        return ret ? new Apfloat(1) : new Apfloat(0);
+        return truthValue ? new BigDecimal(1) : new BigDecimal(0);
     }
 
     /**
@@ -101,12 +112,12 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      * @return  The value of the expression represented by the context
      */
     @Override
-    public Apfloat visitExpression(CalcParser.ExpressionContext ctx) {
-        Apfloat lValue = visit(ctx.multExpression(0));
+    public BigDecimal visitExpression(CalcParser.ExpressionContext ctx) {
+        BigDecimal lValue = visit(ctx.multExpression(0));
         if (ctx.op == null) return lValue;
 
         // If this line is reached, an operation is being performed here.
-        Apfloat rValue = visit(ctx.multExpression(1));
+        BigDecimal rValue = visit(ctx.multExpression(1));
         return (ctx.op.getType() == CalcParser.PLUS ?
                 lValue.add(rValue) :
                 lValue.subtract(rValue));
@@ -119,15 +130,15 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      * @return  The value of the expression represented by the context
      */
     @Override
-    public Apfloat visitMultExpression(CalcParser.MultExpressionContext ctx) {
-        Apfloat lValue = visit(ctx.powExpression(0));
+    public BigDecimal visitMultExpression(CalcParser.MultExpressionContext ctx) {
+        BigDecimal lValue = visit(ctx.powExpression(0));
         if (ctx.op == null) return lValue;
 
         // If this line is reached, an operation is being performed here.
-        Apfloat rValue = visit(ctx.powExpression(1));
+        BigDecimal rValue = visit(ctx.powExpression(1));
         return (ctx.op.getType() == CalcParser.MULT ?
                 lValue.multiply(rValue) :
-                lValue.divide(rValue));
+                lValue.divide(rValue, MathContext.DECIMAL64));
     }
 
     /**
@@ -137,11 +148,11 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      * @return  The value of the expression represented by the context
      */
     @Override
-    public Apfloat visitPowExpression(CalcParser.PowExpressionContext ctx) {
-        Apfloat base = visit(ctx.unit());
-        Apfloat exp  = (ctx.multExpression() != null ? visit(ctx.multExpression()) : new Apfloat(1));
+    public BigDecimal visitPowExpression(CalcParser.PowExpressionContext ctx) {
+        BigDecimal base = visit(ctx.unit());
+        BigDecimal exp  = (ctx.multExpression() != null ? visit(ctx.multExpression()) : new BigDecimal(1));
 
-        return ApfloatMath.pow(base, exp);
+        return base.pow(exp.intValue());
     }
 
     /**
@@ -152,7 +163,7 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      * @return  The value of the number the context represents
      */
     @Override
-    public Apfloat visitSciNotation(CalcParser.SciNotationContext ctx) {
+    public BigDecimal visitSciNotation(CalcParser.SciNotationContext ctx) {
         return visit(ctx.scientific());
     }
 
@@ -164,7 +175,7 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      * @return  The value of the variable the context represents if it exists, otherwise <code>0</code>
      */
     @Override
-    public Apfloat visitVariable(CalcParser.VariableContext ctx) {
+    public BigDecimal visitVariable(CalcParser.VariableContext ctx) {
         return visit(ctx.var());
     }
 
@@ -176,7 +187,7 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      * @return  The value of the expression the context represents
      */
     @Override
-    public Apfloat visitParenExpression(CalcParser.ParenExpressionContext ctx) {
+    public BigDecimal visitParenExpression(CalcParser.ParenExpressionContext ctx) {
         return visit(ctx.expression());
     }
 
@@ -188,7 +199,7 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      * @return  The value of the number the context represents
      */
     @Override
-    public Apfloat visitFunction(CalcParser.FunctionContext ctx) {
+    public BigDecimal visitFunction(CalcParser.FunctionContext ctx) {
         return visit(ctx.func());
     }
 
@@ -201,8 +212,8 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      * @return  The value of the scientific number that the context represents
      */
     @Override
-    public Apfloat visitScientific(CalcParser.ScientificContext ctx) {
-        return new Apfloat(ctx.getText(), 32);
+    public BigDecimal visitScientific(CalcParser.ScientificContext ctx) {
+        return new BigDecimal(ctx.getText(), MathContext.UNLIMITED);
     }
 
     /**
@@ -213,10 +224,10 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      * @return  The value of the variable the context represents if it exists in memStack, <code>0</code> if it doesn't.
      */
     @Override
-    public Apfloat visitVar(CalcParser.VarContext ctx) {
+    public BigDecimal visitVar(CalcParser.VarContext ctx) {
         String id = ctx.id().getText();
         if (memStack.containsKey(id)) return memStack.get(id);
-        return new Apfloat(0);
+        return new BigDecimal(0);
     }
 
     /**
@@ -225,7 +236,7 @@ public class CASCalcVisitor extends CalcBaseVisitor<Apfloat> {
      * @return  The last result if it exists, otherwise {@code 0}.
      */
     @Override
-    public Apfloat visitLastResult(CalcParser.LastResultContext ctx) {
-        return resultStack.size() > 0 ? resultStack.get(resultStack.size() - 1) : new Apfloat(0);
+    public BigDecimal visitLastResult(CalcParser.LastResultContext ctx) {
+        return resultStack.size() > 0 ? resultStack.get(resultStack.size() - 1) : new BigDecimal(0);
     }
 }

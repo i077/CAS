@@ -20,7 +20,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../javalib/apfloat.jar!/" />
+          <root url="jar://$MODULE_DIR$/../javalib/jas-2.6.5555-bin.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -29,7 +29,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../javalib/jas-2.6.5555-bin.jar!/" />
+          <root url="jar://$MODULE_DIR$/../javalib/org.nevec.rjm.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
