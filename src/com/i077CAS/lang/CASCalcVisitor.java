@@ -86,23 +86,23 @@ public class CASCalcVisitor extends CalcBaseVisitor<BigDecimal> {
         BigDecimal lValue = visit(ctx.expression(0));
         BigDecimal rValue = visit(ctx.expression(1));
 
-        boolean ret = false;
+        boolean truthValue = false;
         switch (ctx.relop.getType()) {
             case CalcParser.EQ:
-                ret = lValue.equals(rValue);
+                truthValue = lValue.equals(rValue);
                 break;
             case CalcParser.GT:
             case CalcParser.LT:
-                ret = lValue.compareTo(rValue) == (ctx.relop.getType() == CalcParser.GT ? 1 : -1);
+                truthValue = lValue.compareTo(rValue) == (ctx.relop.getType() == CalcParser.GT ? 1 : -1);
                 break;
             case CalcParser.GTE:
             case CalcParser.LTE:
-                ret = (lValue.compareTo(rValue) == (ctx.relop.getType() == CalcParser.GTE ? 1 : -1))
+                truthValue = (lValue.compareTo(rValue) == (ctx.relop.getType() == CalcParser.GTE ? 1 : -1))
                         || lValue.equals(rValue);
                 break;
         }
 
-        return ret ? new BigDecimal(1) : new BigDecimal(0);
+        return truthValue ? new BigDecimal(1) : new BigDecimal(0);
     }
 
     /**
