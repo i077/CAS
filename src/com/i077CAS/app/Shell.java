@@ -3,11 +3,13 @@ package com.i077CAS.app;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import com.i077CAS.lang.*;
+import com.i077CAS.lib.Trig;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -19,8 +21,9 @@ import org.antlr.v4.runtime.tree.ParseTree;
  */
 public class Shell {
     private HashMap<String, BigDecimal> memStack;
-    private List<BigDecimal> resultStack;
-    private BufferedReader input;
+    private HashMap<String, Method>     funcLookupTable;
+    private List<BigDecimal>            resultStack;
+    private BufferedReader              input;
 
     public Shell() {
         this.init();
@@ -30,9 +33,15 @@ public class Shell {
      * Initialize the shell interface.
      */
     private void init() {
-        memStack = new HashMap<>();
-        resultStack = new ArrayList<>();
-        input = new BufferedReader(new InputStreamReader(System.in));
+        memStack        = new HashMap<>();
+        funcLookupTable = new HashMap<>();
+        resultStack     = new ArrayList<>();
+        input           = new BufferedReader(new InputStreamReader(System.in));
+
+        for (Method method : Trig.class.getMethods()) {
+            funcLookupTable.put(method.getName(), method);
+        }
+
         System.out.println("Entering interactive mode. Type an expression or equation and press ENTER to evaluate.");
     }
 
@@ -45,12 +54,12 @@ public class Shell {
     public void run() throws IOException {
         //noinspection InfiniteLoopStatement
         while (true) {
-            ANTLRInputStream inputStream = new ANTLRInputStream(input.readLine());
-            CalcLexer lexer = new CalcLexer(inputStream);
-            CommonTokenStream tokens = new CommonTokenStream(lexer);
-            CalcParser parser = new CalcParser(tokens);
-            ParseTree tree = parser.input();
-            CASCalcVisitor visitor = new CASCalcVisitor(memStack, resultStack);
+            ANTLRInputStream    inputStream = new ANTLRInputStream(input.readLine());
+            CalcLexer           lexer       = new CalcLexer(inputStream);
+            CommonTokenStream   tokens      = new CommonTokenStream(lexer);
+            CalcParser          parser      = new CalcParser(tokens);
+            ParseTree           tree        = parser.input();
+            CASCalcVisitor      visitor     = new CASCalcVisitor(memStack, resultStack, funcLookupTable);
 
 
             try {

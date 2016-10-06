@@ -1,6 +1,7 @@
 package com.i077CAS.lang;
 
-
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.List;
  */
 public class CASCalcVisitor extends CalcBaseVisitor<BigDecimal> {
     private HashMap<String, BigDecimal> memStack;
+    private HashMap<String, Method> funcLookupTable;
     private List<BigDecimal> resultStack;
 
     /**
@@ -19,9 +21,10 @@ public class CASCalcVisitor extends CalcBaseVisitor<BigDecimal> {
      * @param currStack     The stack that stores variables and their values.
      * @param resultStack   The stack of results that the user inputs evaluate to.
      */
-    public CASCalcVisitor(HashMap<String, BigDecimal> currStack, List<BigDecimal> resultStack) {
+    public CASCalcVisitor(HashMap<String, BigDecimal> currStack, List<BigDecimal> resultStack, HashMap<String, Method> funcLookupTable) {
         this.memStack = currStack;
         this.resultStack = resultStack;
+        this.funcLookupTable = funcLookupTable;
     }
 
     /**
@@ -72,7 +75,19 @@ public class CASCalcVisitor extends CalcBaseVisitor<BigDecimal> {
      */
     @Override
     public BigDecimal visitFunc(CalcParser.FuncContext ctx) {
-        return super.visitFunc(ctx);
+        String id = ctx.id().getText();
+        BigDecimal res = new BigDecimal(0);
+        BigDecimal arg = visit(ctx.input(0));
+        if (funcLookupTable.containsKey(id)) {
+            try {
+                // invoke method using reflection
+                Object obj = funcLookupTable.get(id).invoke(null, arg);
+                res = (BigDecimal) obj;
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
+        return res;
     }
 
     /**
