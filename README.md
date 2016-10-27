@@ -1,4 +1,4 @@
-# Implementation of a Computer Algebra System (CAS).
+# Attempt at an implementation of a Computer Algebra System (CAS).
 
 Rather than evaluate expressions numerically as a non-CAS calculator would, a CAS 
 interprets and evaluates expressions symbolically. This allows the software to 
