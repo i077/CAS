@@ -18,10 +18,12 @@ public class CASCalcVisitor extends CalcBaseVisitor<BigDecimal> {
     /**
      * Construct a new parse tree visitor with passed in memory and result stacks.
      *
-     * @param currStack     The stack that stores variables and their values.
-     * @param resultStack   The stack of results that the user inputs evaluate to.
+     * @param currStack         The stack that stores variables and their values.
+     * @param resultStack       The stack of results that the user inputs evaluate to.
+     * @param funcLookupTable   Function lookup table for the visitor to call functions via reflection.
      */
-    public CASCalcVisitor(HashMap<String, BigDecimal> currStack, List<BigDecimal> resultStack, HashMap<String, Method> funcLookupTable) {
+    public CASCalcVisitor(HashMap<String, BigDecimal> currStack, List<BigDecimal> resultStack,
+                          HashMap<String, Method> funcLookupTable) {
         this.memStack = currStack;
         this.resultStack = resultStack;
         this.funcLookupTable = funcLookupTable;
