@@ -66,10 +66,11 @@ public class Shell {
                 BigDecimal result = visitor.visit(tree);
                 System.out.println(result);
                 resultStack.add(result);
+                System.out.println();
             } catch (Exception e) {
                 System.err.println(e.getMessage());
+                System.err.println();
             }
-            System.out.println();
         }
     }
 }

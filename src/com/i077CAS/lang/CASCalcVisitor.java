@@ -244,7 +244,8 @@ public class CASCalcVisitor extends CalcBaseVisitor<BigDecimal> {
     public BigDecimal visitVar(CalcParser.VarContext ctx) {
         String id = ctx.id().getText();
         if (memStack.containsKey(id)) return memStack.get(id);
-        return new BigDecimal(0);
+//        return new BigDecimal(0);
+        throw new IllegalArgumentException("Variable \'" + id + "\' not defined. Use \'let\' to define it.");
     }
 
     /**
